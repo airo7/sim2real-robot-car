@@ -1,0 +1,32 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# Arduino build output
+hardware/arduino/main/build/
+
+# Local hardware state: run logs and IR calibration
+hardware/logs/
+hardware/ir_calib.json
+hardware/ir_calib.*.json
+
+# Trained policies: only v8, the policy that drove the real car, is versioned
+rl/policy/*
+!rl/policy/v8_ppo/
+rl/policy/v8_ppo/*
+!rl/policy/v8_ppo/car_ppo.zip
+!rl/policy/v8_ppo/env_config.json
+!rl/policy/v8_ppo/algo.json
+
+# Generated outputs
+runs/
+analysis/out/
+*.track.csv
+*.annotated.mp4
+*.suite.json
+MUJOCO_LOG.TXT

@@ -1,0 +1,207 @@
+<mujoco model="elegoo_v4">
+
+  <!--
+    Elegoo Smart Robot Car V4, 4WD skid steer. Plates 231 × 132.5 mm from the official Elegoo
+    plate STL; track 125 mm, wheelbase 80 mm, wheel radius 33 mm.
+    Origin: chassis at axle height (z = 0.033). +x forward, +y left, +z up.
+  -->
+
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast"/>
+
+  <visual>
+    <rgba fog="0.65 0.80 0.95 1"/>
+    <map fogstart="1.5" fogend="9"/>
+    <headlight ambient="0.30 0.30 0.32" diffuse="0.35 0.35 0.35" specular="0 0 0"/>
+  </visual>
+
+  <default>
+    <joint damping="0.003" armature="0.0002"/>
+    <geom condim="4" friction="1.2 0.001 0.0001"/>
+  </default>
+
+  <asset>
+    <texture name="planks" type="2d" builtin="checker" width="512" height="512"
+             rgb1="0.80 0.72 0.61" rgb2="0.75 0.67 0.56"/>
+    <material name="floor_mat" texture="planks" texuniform="true" texrepeat="0.25 2.5" reflectance="0.0"/>
+  </asset>
+
+  <worldbody>
+
+    <light pos="0 0 6" dir="0 0 -1" diffuse="0.55 0.55 0.55" castshadow="true"/>
+    <light pos="4 -4 5" dir="-1 1 -2" diffuse="0.20 0.20 0.20" castshadow="false"/>
+
+    <geom name="floor" type="plane" size="15 15 0.1"
+          material="floor_mat" condim="3" friction="1.0 0.005 0.0001"/>
+
+    <body name="chassis" pos="0 0 0.033">
+      <freejoint name="root"/>
+
+      <camera name="topdown" pos="0 0 1.40"
+              xyaxes="1 0 0  0 1 0" fovy="60"/>
+
+      <geom name="base_plate" type="box"
+            pos="0 0 -0.021" size="0.115 0.066 0.003"
+            rgba="0.06 0.06 0.07 1" mass="0.12"
+            condim="1" friction="0.3 0.001 0.0001"/>
+
+      <geom name="top_plate" type="box" pos="0 0 0.015" size="0.115 0.066 0.002"
+            rgba="0.06 0.06 0.07 1" mass="0.06" contype="0" conaffinity="0"/>
+      <geom name="rail_l" type="box"
+            pos="0 0.036 -0.006" size="0.030 0.009 0.018"
+            rgba="0.06 0.06 0.07 1" mass="0.04"/>
+      <geom name="rail_r" type="box"
+            pos="0 -0.036 -0.006" size="0.030 0.009 0.018"
+            rgba="0.06 0.06 0.07 1" mass="0.04"/>
+
+      <geom name="battery" type="box"
+            pos="-0.060 0 0.030" size="0.040 0.045 0.013"
+            rgba="0.07 0.07 0.07 1" mass="0.22"/>
+      <geom name="batt_label" type="box"
+            pos="-0.060 0 0.044" size="0.036 0.041 0.001"
+            rgba="0.75 0.75 0.75 1" mass="0.001"
+            contype="0" conaffinity="0"/>
+
+      <geom name="arduino" type="box"
+            pos="0.012 0 0.018" size="0.034 0.025 0.008"
+            rgba="0.05 0.25 0.55 1" mass="0.030"/>
+      <geom name="usb_b" type="box"
+            pos="-0.024 -0.013 0.018" size="0.008 0.007 0.006"
+            rgba="0.65 0.55 0.10 1" mass="0.002"
+            contype="0" conaffinity="0"/>
+      <geom name="mcu" type="box"
+            pos="0.008 0.006 0.027" size="0.014 0.014 0.002"
+            rgba="0.05 0.05 0.05 1" mass="0.002"
+            contype="0" conaffinity="0"/>
+
+      <geom name="shield" type="box"
+            pos="0.012 0 0.030" size="0.038 0.030 0.006"
+            rgba="0.07 0.07 0.08 1" mass="0.018"/>
+      <geom name="tb6612" type="box"
+            pos="0.030 -0.015 0.037" size="0.010 0.010 0.003"
+            rgba="0.15 0.15 0.15 1" mass="0.003"
+            contype="0" conaffinity="0"/>
+
+      <geom name="us_housing" type="box"
+            pos="0.103 0 0.030" size="0.011 0.026 0.013"
+            rgba="0.08 0.30 0.65 1" mass="0.008"/>
+      <geom name="us_eye_l" type="cylinder"
+            pos="0.112 0.014 0.030" euler="0 90 0" size="0.008 0.009"
+            rgba="0.80 0.80 0.82 1" mass="0.002"
+            contype="0" conaffinity="0"/>
+      <geom name="us_eye_r" type="cylinder"
+            pos="0.112 -0.014 0.030" euler="0 90 0" size="0.008 0.009"
+            rgba="0.80 0.80 0.82 1" mass="0.002"
+            contype="0" conaffinity="0"/>
+
+      <geom name="esp32_mount" type="box"
+            pos="0.050 0 0.038" size="0.014 0.008 0.004"
+            rgba="0.07 0.07 0.07 1" mass="0.002"
+            contype="0" conaffinity="0"/>
+      <geom name="esp32_pcb" type="box"
+            pos="0.050 0 0.045" size="0.022 0.015 0.007"
+            rgba="0.10 0.45 0.20 1" mass="0.008"
+            contype="0" conaffinity="0"/>
+      <geom name="cam_lens" type="cylinder"
+            pos="0.070 0 0.045" euler="0 90 0" size="0.005 0.003"
+            rgba="0.10 0.45 0.20 1" mass="0.001"
+            contype="0" conaffinity="0"/>
+      <geom name="antenna" type="capsule"
+            pos="0.035 0 0.058" euler="0 0 15" size="0.002 0.012"
+            rgba="0.12 0.12 0.12 1" mass="0.001"
+            contype="0" conaffinity="0"/>
+
+      <geom name="ir_board" type="box"
+            pos="0.100 0 -0.026" size="0.012 0.025 0.002"
+            rgba="0.07 0.07 0.08 1" mass="0.008"/>
+
+      <geom name="mtr_lf" type="box" pos=" 0.040  0.038 -0.002" size="0.020 0.012 0.016"
+            rgba="0.95 0.76 0.10 1" mass="0.028" contype="0" conaffinity="0"/>
+      <geom name="mtr_lr" type="box" pos="-0.040  0.038 -0.002" size="0.020 0.012 0.016"
+            rgba="0.95 0.76 0.10 1" mass="0.028" contype="0" conaffinity="0"/>
+      <geom name="mtr_rf" type="box" pos=" 0.040 -0.038 -0.002" size="0.020 0.012 0.016"
+            rgba="0.95 0.76 0.10 1" mass="0.028" contype="0" conaffinity="0"/>
+      <geom name="mtr_rr" type="box" pos="-0.040 -0.038 -0.002" size="0.020 0.012 0.016"
+            rgba="0.95 0.76 0.10 1" mass="0.028" contype="0" conaffinity="0"/>
+
+      <!-- hinge axis +y, so positive ω drives forward; euler="90 0 0" turns the cylinder axis from z to y -->
+      <body name="lf_wheel" pos="0.040 0.0625 0">
+        <joint name="lf_joint" type="hinge" axis="0 1 0"/>
+        <geom name="lf_tyre" type="cylinder" size="0.033 0.013" euler="90 0 0"
+              rgba="0.08 0.08 0.08 1" mass="0.055"/>
+        <geom type="cylinder" size="0.015 0.014" euler="90 0 0"
+              rgba="0.95 0.78 0.12 1" mass="0.008"
+              contype="0" conaffinity="0"/>
+        <geom type="cylinder" size="0.004 0.0145" euler="90 0 0"
+              rgba="0.70 0.70 0.70 1" mass="0.001"
+              contype="0" conaffinity="0"/>
+      </body>
+
+      <body name="lr_wheel" pos="-0.040 0.0625 0">
+        <joint name="lr_joint" type="hinge" axis="0 1 0"/>
+        <geom name="lr_tyre" type="cylinder" size="0.033 0.013" euler="90 0 0"
+              rgba="0.08 0.08 0.08 1" mass="0.055"/>
+        <geom type="cylinder" size="0.015 0.014" euler="90 0 0"
+              rgba="0.95 0.78 0.12 1" mass="0.008"
+              contype="0" conaffinity="0"/>
+        <geom type="cylinder" size="0.004 0.0145" euler="90 0 0"
+              rgba="0.70 0.70 0.70 1" mass="0.001"
+              contype="0" conaffinity="0"/>
+      </body>
+
+      <body name="rf_wheel" pos="0.040 -0.0625 0">
+        <joint name="rf_joint" type="hinge" axis="0 1 0"/>
+        <geom name="rf_tyre" type="cylinder" size="0.033 0.013" euler="90 0 0"
+              rgba="0.08 0.08 0.08 1" mass="0.055"/>
+        <geom type="cylinder" size="0.015 0.014" euler="90 0 0"
+              rgba="0.95 0.78 0.12 1" mass="0.008"
+              contype="0" conaffinity="0"/>
+        <geom type="cylinder" size="0.004 0.0145" euler="90 0 0"
+              rgba="0.70 0.70 0.70 1" mass="0.001"
+              contype="0" conaffinity="0"/>
+      </body>
+
+      <body name="rr_wheel" pos="-0.040 -0.0625 0">
+        <joint name="rr_joint" type="hinge" axis="0 1 0"/>
+        <geom name="rr_tyre" type="cylinder" size="0.033 0.013" euler="90 0 0"
+              rgba="0.08 0.08 0.08 1" mass="0.055"/>
+        <geom type="cylinder" size="0.015 0.014" euler="90 0 0"
+              rgba="0.95 0.78 0.12 1" mass="0.008"
+              contype="0" conaffinity="0"/>
+        <geom type="cylinder" size="0.004 0.0145" euler="90 0 0"
+              rgba="0.70 0.70 0.70 1" mass="0.001"
+              contype="0" conaffinity="0"/>
+      </body>
+
+      <!-- IR markers only: the env models the sensors from Variant.ir_x / ir_spacing -->
+      <site name="ir_left"   pos="0.103  0.015 -0.033" size="0.005" rgba="1.0 0.5 0.0 1"/>
+      <site name="ir_center" pos="0.103  0.000 -0.033" size="0.005" rgba="1.0 0.5 0.0 1"/>
+      <site name="ir_right"  pos="0.103 -0.015 -0.033" size="0.005" rgba="1.0 0.5 0.0 1"/>
+
+      <!-- 3 rays across the HC-SR04's ~30° cone; rangefinders measure along site +z -->
+      <site name="us_c" pos="0.118 0 0.030" zaxis="1 0 0" size="0.003" rgba="0 0 0 0"/>
+      <site name="us_l" pos="0.118 0 0.030" zaxis="0.966 0.259 0" size="0.003" rgba="0 0 0 0"/>
+      <site name="us_r" pos="0.118 0 0.030" zaxis="0.966 -0.259 0" size="0.003" rgba="0 0 0 0"/>
+
+    </body>
+
+    <!-- mocap obstacles placed by the env each episode, parked underground when unused -->
+    <body name="obst0" mocap="true" pos="0 0 -5"><geom name="obst0" type="box" size="0.05 0.05 0.05" rgba="0.55 0.38 0.22 1"/></body>
+    <body name="obst1" mocap="true" pos="0.3 0 -5"><geom name="obst1" type="box" size="0.05 0.05 0.05" rgba="0.85 0.85 0.82 1"/></body>
+    <body name="obst2" mocap="true" pos="0.6 0 -5"><geom name="obst2" type="box" size="0.05 0.05 0.05" rgba="0.30 0.45 0.60 1"/></body>
+  </worldbody>
+
+  <!-- velocity actuators used as DC motors: ctrl = ω_nl·duty, torque = kv·(ctrl − ω); kv is set at runtime -->
+  <actuator>
+    <velocity name="lf_vel" joint="lf_joint" kv="0.8"/>
+    <velocity name="lr_vel" joint="lr_joint" kv="0.8"/>
+    <velocity name="rf_vel" joint="rf_joint" kv="0.8"/>
+    <velocity name="rr_vel" joint="rr_joint" kv="0.8"/>
+  </actuator>
+
+  <sensor>
+    <rangefinder name="us_c" site="us_c"/>
+    <rangefinder name="us_l" site="us_l"/>
+    <rangefinder name="us_r" site="us_r"/>
+  </sensor>
+
+</mujoco>

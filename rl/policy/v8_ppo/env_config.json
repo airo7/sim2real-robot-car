@@ -1,0 +1,10 @@
+{
+  "frames": 8,
+  "ultrasonic": true,
+  "privileged": true,
+  "scenarios": true,
+  "pwm_scale": 100,
+  "shield": true,
+  "fail_penalty": 40.0,
+  "dead_zone": true
+}

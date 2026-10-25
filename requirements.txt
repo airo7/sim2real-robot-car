@@ -1,0 +1,17 @@
+# simulation and learning
+mujoco>=3.2
+gymnasium>=1.0
+numpy>=2.0
+scipy>=1.11
+torch>=2.2
+stable-baselines3==2.5.*
+sb3-contrib==2.5.*      # must match the stable-baselines3 minor version
+tensorboard>=2.15
+
+# hardware
+pyserial>=3.5
+bleak>=0.22
+
+# viewers, analysis and video tracking
+matplotlib>=3.8
+opencv-python>=4.9
